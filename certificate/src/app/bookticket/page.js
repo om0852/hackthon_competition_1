@@ -27,14 +27,16 @@ const Page = () => {
     }, [])
     const handelData = async (e) => {
         e.preventDefault();
-
+        const queryString = window.location.search;
+        const urlParams = new URLSearchParams(queryString);
+        let portfolioid = urlParams.get('pid'); // value1
         const res = await fetch(`http://localhost:3000/api/soldticket`, {
             method: "POST",
             headers: {
                 Accept: "application/json",
                 "Content-Type": "application/json",
             },
-            body: JSON.stringify({ data }),
+            body: JSON.stringify({ id: portfolioid, Name: data.name, Email: data.email, Phone: data.phone, Members: data.members }),
         });
         const response = await res.json();
         if (response.status == 200) {
@@ -313,11 +315,7 @@ const Page = () => {
                             type="submit"
                             className="w-full text-white bg-blue-600 hover:bg-primary-700 focus:ring-4 focus:outline-none focus:ring-primary-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center "
                         >
-<<<<<<< HEAD
                             Book Nom
-=======
-                        Book NoW
->>>>>>> 6303fe88229c1e093987f3c11d6396da93ba1e67
                         </button>
 
 

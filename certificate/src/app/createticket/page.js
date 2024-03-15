@@ -69,7 +69,7 @@ const Page = () => {
                     Accept: "application/json",
                     "Content-Type": "application/json",
                 },
-                body: JSON.stringify({ data }),
+                body: JSON.stringify({ Name: data.name, Email: data.email, Phone: 2333, Place: data.Place, StartTime: data.StartTime, EndTime: data.EndTime, RemainingTicket: data.RemainingTicket, StartDate: "2345", EndDate: "23456", Price: data.Price }),
             });
             const response = await res.json();
             if (response.status === 200) {
@@ -106,11 +106,7 @@ const Page = () => {
         <div className="flex flex-col items-center justify-center px-6 py-6 mx-auto">
             <div className="mb-6 md:mb-0 flex flex-row justify-content-center justify-center my-2">
                 <p className="text-2xl text-center text-white font-bold ml-3 bg-red-500 w-auto h-auto py-1 pr-2">
-<<<<<<< HEAD
                     <span className=" bg-black text-white px-2 py-1">Digital</span> Temple{" "}
-=======
-                    <span className=" bg-black text-white px-2 py-1">Digital</span> Temp{" "}
->>>>>>> 6303fe88229c1e093987f3c11d6396da93ba1e67
                 </p>
             </div>
             <div className="w-full bg-white rounded-lg shadow  md:mt-0 sm:max-w-md xl:p-0 ">
@@ -173,7 +169,6 @@ const Page = () => {
                         </div>
                         <div>
                             <label
-<<<<<<< HEAD
                                 for="StartTime"
                                 className="block mb-2 text-sm font-medium text-gray-900 "
                             >
@@ -208,8 +203,6 @@ const Page = () => {
                         </div>
                         <div>
                             <label
-=======
->>>>>>> 6303fe88229c1e093987f3c11d6396da93ba1e67
                                 for="StartDate"
                                 className="block mb-2 text-sm font-medium text-gray-900 "
                             >
@@ -242,41 +235,6 @@ const Page = () => {
                                 required="true"
                             />
                         </div>
-                        <div>
-                            <label
-                                for="StartTime"
-                                className="block mb-2 text-sm font-medium text-gray-900 "
-                            >
-                              Start Time
-                            </label>
-                            <input
-                                onChange={(e) => onchange(e)}
-                                type="time"
-                                name="StartTime"
-                                id="StartTime"
-                                className="bg-white border border-gray-300 text-gray-900 sm:text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5"
-                                placeholder="Start Time"
-                                required="true"
-                            />
-                        </div>
-                        <div>
-                            <label
-                                for="EndTime"
-                                className="block mb-2 text-sm font-medium text-gray-900 "
-                            >
-                              End Time
-                            </label>
-                            <input
-                                onChange={(e) => onchange(e)}
-                                type="time"
-                                name="EndTime"
-                                id="EndTime"
-                                className="bg-white border border-gray-300 text-gray-900 sm:text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5"
-                                placeholder="End Time"
-                                required="true"
-                            />
-                        </div>
-                        
                         <div>
                             <label
                                 for="Remaining Ticket"
