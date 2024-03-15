@@ -411,8 +411,8 @@ const Navbar = () => {
             <div className="flex flex-row justify-center items-center">
               <Image src={image} width={50} height={50} alt="df" />
               <p className="text-2xl text-center text-white font-bold ml-3 bg-red-500 w-auto h-auto py-1 pr-2">
-                <span className=" bg-black text-white px-2 py-1">Bluechip</span>{" "}
-                Art{" "}
+                <span className=" bg-black text-white px-2 py-1">Digital</span>{" "}
+                Temp{" "}
               </p>
             </div>
             <div className="lg:hidden">

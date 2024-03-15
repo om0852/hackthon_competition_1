@@ -72,6 +72,7 @@ const Page = () => {
                 body: JSON.stringify({ Name: data.name, Email: data.email, Phone: 2333, Place: data.Place, StartTime: data.StartTime, EndTime: data.EndTime, RemainingTicket: data.RemainingTicket, StartDate: "2345", EndDate: "23456", Price: data.Price }),
             });
             const response = await res.json();
+            alert(response.message)
             if (response.status === 200) {
                 toast.success("Registration Successful", {
                     position: "top-center",
