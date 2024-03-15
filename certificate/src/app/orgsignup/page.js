@@ -67,7 +67,7 @@ const Page = () => {
     ) {
       if (data.password.length >= 8) {
         if (data.password === data.cpassword) {
-          const res = await fetch(`${process.env.NEXT_PUBLIC_HOST}api/orgsignup`, {
+          const res = await fetch(`http://localhost:3000/api/orgsignup`, {
             method: "POST",
             headers: {
               Accept: "application/json",

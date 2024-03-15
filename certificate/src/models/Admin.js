@@ -8,10 +8,10 @@ const AdminSchema = new mongoose.Schema(
     address: { type: String, default: "" },
     phone: { type: String, default: "" },
     role: { type: String, default: "admin" },
-    
+
   },
   { timestamps: true }
 );
 
 mongoose.models = {};
-export default mongoose.model("Admin", AdminSchema);
+export default mongoose.model("org_Admin", AdminSchema);
