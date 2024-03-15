@@ -10,6 +10,7 @@ const UserTicket = new mongoose.Schema({
     StartTime: { type: String, require: true },
     EndTime: { type: String, require: true },
     Place: { type: String, require: true },
+    TicketName: { type: String, require: true }
 }, { timestamps: true })
 
 mongoose.models = {}
