@@ -13,27 +13,31 @@ export default function Home() {
     "https://images.unsplash.com/photo-1506710507565-203b9f24669b?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=1536&q=80",
     "https://images.unsplash.com/photo-1536987333706-fc9adfb10d91?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=1500&q=80",
 ];
-const [Admindata, setAdmindata] = useState([2,1,3,5,7,6,4])
+const [ticketdata, setticketdata] = useState(null)
 
 
 
 useEffect(() => {
-  fetch()
+  fetchdata();
 }, [])
 
-const fetch= async()=>{
-  const res = await fetch(`http://localhost:3000/api/checkticket`, {
-    method: "POST",
-    headers: {
+
+const fetchdata = async () => {
+  const res = await fetch(
+    `http://localhost:3000/api/checkticket`,
+    {
+      method: "POST",
+      headers: {
         Accept: "application/json",
         "Content-Type": "application/json",
-    },
-    body:{},
-});
-const response = await res.json();
-
-console.log(response)
-}
+      },
+      body: "",
+    }
+  );
+  const response = await res.json();
+  console.log(response);
+  setticketdata(response.message)
+};
 
 
 
@@ -51,30 +55,31 @@ console.log(response)
                 
               </span>
             </div>
-            {Admindata &&
-              Admindata.map((elem, index) => {
+            {ticketdata &&
+              ticketdata.map((elem, index) => {
                 if (index < 6) {
                   console.log(elem);
                   return (
                     <div key={index}>
-                      <div className="bg-white shadow-md rounded-lg max-w-sm m-2">
+                      <div className="bg-white shadow-md rounded-lg max-w-sm m-2 min-w-56">
                         <Link
                           key={index}
                           href={`/admin/userticket/pid=${elem.id}`}
                         >
                           <h2 className="m-2 p-3 font-bold text-blue-600 text-3xl">
-"                            {elem.PortfolioName}
-"                          </h2>
+                            {elem.Name}
+                          </h2>
                         </Link>
                         <div className="m-2 px-4 pb-4">
-                          <p>
-                            <span className="text-black font-medium text-lg tracking-tight ">
-                              {/* {(elem ? elem.overview : "").slice(0, 100) + "..."} */}
-                              Explore Edward Babcock&apos;s board &apos;Tri color
-                              combinations&apos; on Pinterest. See more ideas about
-                              color, color combinations, color inspiration.
-                            </span>
-                          </p>
+                          <span className="text-md text-black font-medium">
+                            StartTime:{elem.StartTime}
+                          </span><br/>
+                          <span>
+                            EndTime:{elem.EndTime}
+                          </span><br/>
+                          <span>
+                            Price:{elem.Price}
+                          </span>
 
                           <div className="flex items-center justify-center my-2 mt-4">
 
