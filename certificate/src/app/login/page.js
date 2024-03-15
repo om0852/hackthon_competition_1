@@ -40,7 +40,7 @@ const Page = () => {
         });
         if (decoded.role == "user") { router.push('/') }
         if (decoded.role == "admin") {
-          router.push('/dashboard/portfolios')
+          router.push('/')
         }
       }
 
@@ -71,7 +71,7 @@ const Page = () => {
         theme: "colored",
       });
     } else {
-      const res = await fetch(`${process.env.NEXT_PUBLIC_HOST}api/login`, {
+      const res = await fetch(`http://localhost:3000/api/login`, {
         method: "POST",
         headers: {
           Accept: "application/json",
@@ -95,12 +95,8 @@ const Page = () => {
 
         localStorage.setItem("APFOS_useremail", data.email);
         console.log(response);
-        if (response.metamaskaddress == "") {
-          router.push("/addwalletdetails");
-        }
-        else {
-          router.push("/")
-        }
+        alert("login successfully")
+        router.push("/")
       } else if (response.status === 201) {
         toast.error("Invalid Credentials,Try Again..", {
           position: "top-center",
