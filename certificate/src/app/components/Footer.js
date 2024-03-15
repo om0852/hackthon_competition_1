@@ -14,7 +14,7 @@ const Footer = () => {
                     <div className="md:flex md:justify-between">
                         <div className="mb-6 md:mb-0 flex flex-row justify-center items-center">
                             <Image src={image} width={50} height={50} alt="" />
-                            <p className='text-2xl text-center text-white font-bold ml-3 bg-red-500 w-auto h-auto py-1 pr-2'><span className=' bg-black text-white px-2 py-1'>Bluechip</span> Art </p>
+                            <p className='text-2xl text-center text-white font-bold ml-3 bg-red-500 w-auto h-auto py-1 pr-2'><span className=' bg-black text-white px-2 py-1'>Digital</span> temp </p>
                         </div>
                     </div>
                 </div>
