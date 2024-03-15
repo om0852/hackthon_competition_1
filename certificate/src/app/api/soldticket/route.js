@@ -16,7 +16,7 @@ export async function POST(req, res) {
         if (parseInt(checkticket.RemainingTicket) > 0) {
             await UserTicket.create({ Name, Email, Phone, Members, TotalPrice: (parseInt(checkticket.Price) * parseInt(Members)), Place: checkticket.Place, StartTime: checkticket.StartTime, EndTime: checkticket.EndTime, Price: checkticket.Price, TicketName: checkticket.Name })
             const ucheckticket = await Ticket.updateOne({ _id: id }, { RemainingTicket: parseInt(checkticket.RemainingTicket) - Members });
-            return NextResponse.json({ status: 300, message: "Ticket Purchase Successfully" });
+            return NextResponse.json({ status: 200, message: "Ticket Purchase Successfully" });
 
 
         }
