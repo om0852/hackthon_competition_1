@@ -88,8 +88,8 @@ const Navbar = () => {
             <div className="flex flex-row justify-center items-center">
               <Image src={image} width={50} height={50} alt="df" />
               <p className="text-2xl text-center text-white font-bold ml-3 bg-red-500 w-auto h-auto py-1 pr-2">
-                <span className=" bg-black text-white px-2 py-1">Bluechip</span>{" "}
-                Art{" "}
+                <span className=" bg-black text-white px-2 py-1">Digital</span>{" "}
+                Temp{" "}
               </p>
             </div>
             <div className="lg:hidden">
@@ -121,9 +121,9 @@ const Navbar = () => {
                   ? "text-blue-500 font-bold"
                   : "text-gray-400"
                   }`}
-                href={"/portfolios"}
+                href={"/pass"}
               >
-                Portfolios
+                Pass
               </Link>
               <li className="text-gray-300">|</li>
               <Link
@@ -131,9 +131,9 @@ const Navbar = () => {
                   ? "text-blue-500 font-bold"
                   : "text-gray-400"
                   }`}
-                href={"/Portfolio/assests/buyassestlist"}
+                href={"/mypass"}
               >
-                My Assets
+                My Pass
               </Link>
               <li className="text-gray-300">|</li>
               <Link
@@ -280,17 +280,17 @@ const Navbar = () => {
                     <li className="mb-1">
                       <Link
                         className="block p-4 text-sm font-semibold text-gray-400 hover:bg-blue-50 hover:text-blue-600 rounded"
-                        href={"/portfolios"}
+                        href={"/pass"}
                       >
-                        Portfolios
+                        Pass
                       </Link>
                     </li>
                     <li className="mb-1">
                       <Link
                         className="block p-4 text-sm font-semibold text-gray-400 hover:bg-blue-50 hover:text-blue-600 rounded"
-                        href={"/Portfolio/assests/buyassestlist"}
+                        href={"/mypass"}
                       >
-                        My Assets
+                        My Pass
                       </Link>
                     </li>
                     <li className="mb-1">

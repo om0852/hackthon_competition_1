@@ -313,7 +313,11 @@ const Page = () => {
                             type="submit"
                             className="w-full text-white bg-blue-600 hover:bg-primary-700 focus:ring-4 focus:outline-none focus:ring-primary-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center "
                         >
+<<<<<<< HEAD
                             Book Nom
+=======
+                        Book NoW
+>>>>>>> 6303fe88229c1e093987f3c11d6396da93ba1e67
                         </button>
 
 
