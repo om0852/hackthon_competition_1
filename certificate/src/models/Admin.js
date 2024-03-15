@@ -6,10 +6,9 @@ const AdminSchema = new mongoose.Schema(
     email: { type: String, reqired: true, unique: true },
     password: { type: String, reqired: true },
     address: { type: String, default: "" },
-    organization: { type: String, default: "" },
-    metamaskadress: { type: String, default: "" },
     phone: { type: String, default: "" },
     role: { type: String, default: "admin" },
+    
   },
   { timestamps: true }
 );

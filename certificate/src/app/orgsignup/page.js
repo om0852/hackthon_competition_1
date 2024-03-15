@@ -32,12 +32,7 @@ const Page = () => {
           progress: undefined,
           theme: "colored",
         });
-        if (decoded.role == "admin") {
-          router.push('/dashboard/portfolios');
-        }
-        if (decoded.role == "user") {
-          router.push('/');
-        }
+
       }
     } else {
       router.push('/orgsignup');
@@ -159,7 +154,7 @@ const Page = () => {
           </h1>
           <div className="flex  w-[100%]">
             <Link
-              href={"/signup"}
+              href={"/usersignup"}
               className="w-[50%] text-gray-600 bg-gray-200 hover:bg-primary-700 focus:ring-4 focus:outline-none focus:ring-primary-300 font-medium rounded-lg text-sm m-2 px-3 py-2.5 text-center "
             >
               User
