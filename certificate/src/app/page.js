@@ -57,11 +57,11 @@ const fetchdata = async () => {
             </div>
             {ticketdata &&
               ticketdata.map((elem, index) => {
-                if (index < 6) {
+                if (index < 600) {
                   console.log(elem);
                   return (
                     <div key={index}>
-                      <div className="bg-white shadow-md rounded-lg max-w-sm m-2 min-w-56">
+                      <div className="bg-white shadow-md rounded-lg max-w-sm m-2">
                         <Link
                           key={index}
                           href={`/admin/userticket/pid=${elem.id}`}
@@ -74,10 +74,10 @@ const fetchdata = async () => {
                           <span className="text-md text-black font-medium">
                             StartTime:{elem.StartTime}
                           </span><br/>
-                          <span>
+                          <span className="text-md text-black font-medium">
                             EndTime:{elem.EndTime}
                           </span><br/>
-                          <span>
+                          <span className="text-md text-black font-medium">
                             Price:{elem.Price}
                           </span>
 
