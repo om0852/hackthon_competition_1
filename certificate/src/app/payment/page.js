@@ -2,48 +2,31 @@
 import React, { useState, useEffect } from "react";
 import { useRouter } from "next/navigation";
 import Link from "next/link";
-import { ToastContainer, toast } from "react-toastify";
+import { toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
-import { jwtDecode } from "jwt-decode";
-import defaultpic from "../images/defaultprofile.jpg"
+import Cookies from "js-cookie";
 import Web3 from "web3";
-import APFOS from "./contract.json"
+import APFOS from "../buyassest/APFOS_Contract.json"
+import Ethconverter from "@/app/EThconvert";
 
 const Page = () => {
-    const router = useRouter();
     const [myContract, setMyContract] = useState(null);
     const [transactionHash, setTransactionHash] = useState(null);
     const [web3, setweb3] = useState(null);
     const [UserPrice, setUserPrice] = useState(0);
     const [sender, setsender] = useState(null);
+    const router = useRouter();
+    let price = Cookies.get("price");
     useEffect(() => {
         if (window.ethereum) {
             window.ethereum.on('accountsChanged', handleAccountsChanged);
         }
 
 
-        // setContract();
-        // fetchEthereumPrice();
+        setContract();
+        fetchEthereumPrice();
+        Ethconverter();
     }, [])
-    const handelData = async (e) => {
-        e.preventDefault();
-
-        const res = await fetch(`http://localhost:3000/api/soldticket`, {
-            method: "POST",
-            headers: {
-                Accept: "application/json",
-                "Content-Type": "application/json",
-            },
-            body: JSON.stringify({ data }),
-        });
-        const response = await res.json();
-        if (response.status == 200) {
-            alert("ticket buy successfully")
-        }
-        else {
-            alert("invalid attempt")
-        }
-    }
     const handleAccountsChanged = async (accounts) => {
         setsender(accounts[0]); // Use the first account in the array
     };
@@ -78,6 +61,32 @@ const Page = () => {
             // alert("connect to network")
         }
     }
+    const [data, setdata] = useState({
+        useremail: "",
+        BuyAmount: "",
+        pid: "",
+        PortfolioTotalPrice: "",
+        Transactionid: null,
+        Transactionamount: null,
+        OrginalBuyPrice: ""
+
+    });
+    const onchange = (e) => {
+        const queryString = window.location.search;
+        const urlParams = new URLSearchParams(queryString);
+        let portfolioid = urlParams.get('pid'); // value1
+
+        let APFOS_useremail = localStorage.getItem("APFOS_useremail");
+        let val = e.target.value;
+        setdata({
+            ...data,
+            useremail: APFOS_useremail,
+            BuyAmount: val,
+            pid: portfolioid,
+            PortfolioTotalPrice: price,
+            OrginalBuyPrice: val
+        });
+    };
     const BuyAssest = async (e) => {
         e.preventDefault();
         if (!sender) {
@@ -92,7 +101,7 @@ const Page = () => {
             const urlParams = new URLSearchParams(queryString);
             let portfolioid = urlParams.get('pid'); // value1
 
-            const res = await fetch(`http://localhost:3000/api/portfolio/portfoliodetails`, {
+            const res = await fetch(`${process.env.NEXT_PUBLIC_HOST}/api/portfolio/portfoliodetails`, {
                 method: "POST",
                 headers: {
                     Accept: "application/json",
@@ -148,7 +157,7 @@ const Page = () => {
                     setTransactionHash(result.transactionHash);
 
 
-                    // await handleSubmit(e, result, amountInEther);
+                    await handleSubmit(e, result, amountInEther);
                 }
                 catch (error) {
                     console.log(error)
@@ -172,151 +181,148 @@ const Page = () => {
             alert(error.message);
         }
     }
-    useEffect(() => {
-        if (localStorage.getItem("token")) {
-            let token = localStorage.getItem("token").toString();
-            const decoded = jwtDecode(token);
-            console.log(decoded);
-            // Check for expired token
-            var dateNow = new Date() / 1000;
-            if (dateNow > decoded.exp) {
-                // alert("Your session has been expired.");
-                // localStorage.removeItem("token");
-                // router.push("/login");
-            } else {
-                toast.error("Your are LoggedIn", {
-                    position: "top-center",
-                    autoClose: 1000,
-                    hideProgressBar: false,
-                    closeOnClick: true,
-                    pauseOnHover: true,
-                    draggable: true,
-                    progress: undefined,
-                    theme: "colored",
-                });
-                if (decoded.role == "admin") {
-                    // router.push('/');
-                }
-            }
-        } else {
-            // router.push('/orgsignup');
-        }
 
-    }, []);
-
-    const [data, setdata] = useState({
-        email: "",
-        phone: "",
-        members: "",
-        name: "",
-        id: ""
-
-    });
-
-    const onchange = (e) => {
-        const queryString = window.location.search;
-        const urlParams = new URLSearchParams(queryString);
-        let portfolioid = urlParams.get('pid'); // value1
-        let name = e.target.name;
-        let val = e.target.value;
-        setdata({ ...data, [name]: val, id: portfolioid });
+    const handleSubmit = async (e, result, amountInEther) => {
+        e.preventDefault();
         console.log(data);
+
+        let url = window.location.href;
+        let domain = new URL(url).hostname;
+        let protocol = new URL(url).protocol;
+        let port = new URL(url).port ? `:${new URL(url).port}` : '';
+        let urlString = `${protocol}//${domain}${port}`;
+
+        const res = await fetch(`${urlString}/api/portfolio/Assest/BuyAssest`, {
+            method: "POST",
+            headers: {
+                Accept: "application/json",
+                "Content-Type": "application/json",
+            },
+            body: JSON.stringify({
+                useremail: data.useremail,
+                BuyAmount: data.BuyAmount,
+                pid: data.pid,
+                PortfolioTotalPrice: data.PortfolioTotalPrice,
+                OrginalBuyPrice: data.OrginalBuyPrice,
+                Transactionid: result.transactionHash,
+                Transactionamount: amountInEther,
+            }),
+        });
+        const response = await res.json();
+        console.log(response)
+        if (response.status === 200) {
+            toast.success("Asset Buy Successfully", {
+                position: "top-center",
+                autoClose: 3000,
+                hideProgressBar: false,
+                closeOnClick: false,
+                pauseOnHover: true,
+                draggable: true,
+                progress: undefined,
+                theme: "colored",
+            });
+            Cookies.remove("price");
+            router.push("/Portfolio/assests/buyassestlist");
+        } else if (response.error == "Account Not Found") {
+            toast.error("Account Not Found", {
+                position: "top-center",
+                autoClose: 3000,
+                hideProgressBar: false,
+                closeOnClick: true,
+                pauseOnHover: true,
+                draggable: true,
+                progress: undefined,
+                theme: "colored",
+            });
+            router.push("/login");
+
+        }
+        else if (response.error == "Portfolio Not Found") {
+            toast.error("Portfolio Not Found", {
+                position: "top-center",
+                autoClose: 3000,
+                hideProgressBar: false,
+                closeOnClick: true,
+                pauseOnHover: true,
+                draggable: true,
+                progress: undefined,
+                theme: "colored",
+            });
+            router.push("/");
+
+        }
+        else if (response.status === 201) {
+            toast.error("Invalid Format", {
+                position: "top-center",
+                autoClose: 3000,
+                hideProgressBar: false,
+                closeOnClick: true,
+                pauseOnHover: true,
+                draggable: true,
+                progress: undefined,
+                theme: "colored",
+            });
+            router.push("/");
+        }
+        else {
+            toast.error("Empty Field", {
+                position: "top-center",
+                autoClose: 3000,
+                hideProgressBar: false,
+                closeOnClick: true,
+                pauseOnHover: true,
+                draggable: true,
+                progress: undefined,
+                theme: "colored",
+            });
+        }
+        setdata({
+            useremail: "",
+            walletaddress: "",
+        });
+
+
     };
 
-
     return (
-        <div className="flex flex-col items-center justify-center px-6 py-6 mx-auto">
-            <div className="mb-6 md:mb-0 flex flex-row justify-content-center justify-center my-2">
-                <p className="text-2xl text-center text-white font-bold ml-3 bg-red-500 w-auto h-auto py-1 pr-2">
+        <div className="flex flex-col items-center justify-center px-6 py-8 mx-auto md:h-screen lg:py-0">
+            <div className="mb-6 md:mb-0 flex flex-row justify-center my-2">
+                <p className="text-2xl text-center text-white font-bold ml-3 bg-red-500 w-auto h-auto py-1 -2">
                     <span className=" bg-black text-white px-2 py-1">Bluechip</span> Art{" "}
                 </p>
             </div>
-            <div className="w-full bg-white rounded-lg shadow  md:mt-0 sm:max-w-md xl:p-0 ">
+            <div className="w-full bg-white rounded-lg shadow md:mt-0 sm:max-w-md xl:p-0 ">
                 <div className="p-6 space-y-4 md:space-y-6 sm:p-8">
                     <h1 className="text-xl font-bold leading-tight tracking-tight text-gray-900 md:text-2xl ">
-                        Book Your Ticket Now
+                        Transaction Page
                     </h1>
 
-                    <form className="space-y-4 md:space-y-6" action="#" method="POST">
+                    <form className="space-y-4 md:space-y-6" method="POST">
                         <div>
                             <label
-                                for="email"
+                                htmlFor="email"
                                 className="block mb-2 text-sm font-medium text-gray-900 "
                             >
-                                Your email
-                            </label>
-                            <input
-                                onChange={(e) => onchange(e)}
-                                type="email"
-                                name="email"
-                                id="email"
-                                className="bg-gray-50 border border-gray-300 text-gray-900 sm:text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 "
-                                placeholder="name@company.com"
-                                required="true"
-                            />
-                        </div>
-                        <div>
-                            <label
-                                for="organization"
-                                className="block mb-2 text-sm font-medium text-gray-900 "
-                            >
-                                Name
-                            </label>
-                            <input
-                                onChange={(e) => onchange(e)}
-                                type="text"
-                                name="name"
-                                id="name"
-                                className="bg-white border border-gray-300 text-gray-900 sm:text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5"
-                                placeholder="Your Organization"
-                                required="true"
-                            />
-                        </div>
-                        <div>
-                            <label
-                                for="phone"
-                                className="block mb-2 text-sm font-medium text-gray-900 "
-                            >
-                                Phone Number
+                                Enter Amount
                             </label>
                             <input
                                 onChange={(e) => onchange(e)}
                                 type="number"
-                                name="phone"
-                                id="phone"
+                                name="BuyAmount"
+                                id="BuyAmount"
                                 className="bg-white border border-gray-300 text-gray-900 sm:text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5"
-                                placeholder="Your Phone No."
+                                placeholder="min:10rs"
                                 required="true"
                             />
                         </div>
-                        <div>
-                            <label
-                                for="members"
-                                className="block mb-2 text-sm font-medium text-gray-900 "
-                            >
-                                No. Members
-                            </label>
-                            <input
-                                onChange={(e) => onchange(e)}
-                                type="number"
-                                name="members"
-                                id="members"
-                                className="bg-white border border-gray-300 text-gray-900 sm:text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5"
-                                placeholder="No. of Members"
-                                required="true"
-                            />
-                        </div>
-
 
                         <button
-                            onClick={(e) => handelData(e)}
+                            onClick={(e) => BuyAssest(e)}
                             type="submit"
                             className="w-full text-white bg-blue-600 hover:bg-primary-700 focus:ring-4 focus:outline-none focus:ring-primary-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center "
                         >
-                            Book Nom
+                            Add
                         </button>
-
-
                     </form>
                 </div>
             </div>

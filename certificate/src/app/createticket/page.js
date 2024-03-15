@@ -18,9 +18,9 @@ const Page = () => {
             // Check for expired token
             var dateNow = new Date() / 1000;
             if (dateNow > decoded.exp) {
-                alert("Your session has been expired.");
-                localStorage.removeItem("token");
-                router.push("/login");
+                // alert("Your session has been expired.");
+                // localStorage.removeItem("token");
+                // router.push("/login");
             } else {
                 toast.error("Your are LoggedIn", {
                     position: "top-center",
@@ -33,7 +33,7 @@ const Page = () => {
                     theme: "colored",
                 });
                 if (decoded.role == "admin") {
-                    router.push('/');
+                    // router.push('/');
                 }
             }
         } else {
@@ -48,9 +48,9 @@ const Page = () => {
         EndTime: "",
         StartDate: "",
         EndDate: "",
-        RemainingTicket:"",
-        Place:"",
-        Price:"",
+        RemainingTicket: "",
+        Place: "",
+        Price: "",
     });
 
     const onchange = (e) => {
@@ -62,67 +62,35 @@ const Page = () => {
 
     const handleSubmit = async (e) => {
         e.preventDefault();
-        if (
-            data.email &&
-            data.organization &&
-            data.address &&
-            data.password &&
-            data.cpassword
-        ) {
-            if (data.password.length >= 8) {
-                if (data.password === data.cpassword) {
-                    const res = await fetch(`${process.env.NEXT_PUBLIC_HOST}api/orgsignup`, {
-                        method: "POST",
-                        headers: {
-                            Accept: "application/json",
-                            "Content-Type": "application/json",
-                        },
-                        body: JSON.stringify(data),
-                    });
-                    const response = await res.json();
-                    if (response.status === 200) {
-                        toast.success("Registration Successful", {
-                            position: "top-center",
-                            autoClose: 3000,
-                            hideProgressBar: false,
-                            closeOnClick: true,
-                            pauseOnHover: true,
-                            draggable: true,
-                            progress: undefined,
-                            theme: "colored",
-                        });
-                        localStorage.setItem("APFOS_useremail", data.email);
-                        setTimeout(() => {
-                            router.push("/addwalletdetails");
-                        }, 1000);
-                    } else {
-                        toast.error(response.message, {
-                            position: "top-center",
-                            autoClose: 3000,
-                            hideProgressBar: false,
-                            closeOnClick: true,
-                            pauseOnHover: true,
-                            draggable: true,
-                            progress: undefined,
-                            theme: "colored",
-                        });
-                    }
-                } else {
-                    toast.error("Confirm Password Not Match", {
-                        position: "top-center",
-                        autoClose: 3000,
-                        hideProgressBar: false,
-                        closeOnClick: true,
-                        pauseOnHover: true,
-                        draggable: true,
-                        progress: undefined,
-                        theme: "colored",
-                    });
-                }
-            } else {
-                toast.error("Password must be 8 Atleast characters", {
+        if (true) {
+            const res = await fetch(`http://localhost:3000/api/createticket`, {
+                method: "POST",
+                headers: {
+                    Accept: "application/json",
+                    "Content-Type": "application/json",
+                },
+                body: JSON.stringify({ data }),
+            });
+            const response = await res.json();
+            if (response.status === 200) {
+                toast.success("Registration Successful", {
                     position: "top-center",
-                    autoClose: 1000,
+                    autoClose: 3000,
+                    hideProgressBar: false,
+                    closeOnClick: true,
+                    pauseOnHover: true,
+                    draggable: true,
+                    progress: undefined,
+                    theme: "colored",
+                });
+                localStorage.setItem("APFOS_useremail", data.email);
+                setTimeout(() => {
+                    router.push("/addwalletdetails");
+                }, 1000);
+            } else {
+                toast.error(response.message, {
+                    position: "top-center",
+                    autoClose: 3000,
                     hideProgressBar: false,
                     closeOnClick: true,
                     pauseOnHover: true,
@@ -131,24 +99,14 @@ const Page = () => {
                     theme: "colored",
                 });
             }
-        } else {
-            toast.error("Enter All Fields", {
-                position: "top-center",
-                autoClose: 1000,
-                hideProgressBar: false,
-                closeOnClick: true,
-                pauseOnHover: true,
-                draggable: true,
-                progress: undefined,
-                theme: "colored",
-            });
         }
+
     };
     return (
         <div className="flex flex-col items-center justify-center px-6 py-6 mx-auto">
             <div className="mb-6 md:mb-0 flex flex-row justify-content-center justify-center my-2">
                 <p className="text-2xl text-center text-white font-bold ml-3 bg-red-500 w-auto h-auto py-1 pr-2">
-                    <span className=" bg-black text-white px-2 py-1">Bluechip</span> Art{" "}
+                    <span className=" bg-black text-white px-2 py-1">Digital</span> Temple{" "}
                 </p>
             </div>
             <div className="w-full bg-white rounded-lg shadow  md:mt-0 sm:max-w-md xl:p-0 ">
@@ -156,7 +114,7 @@ const Page = () => {
                     <h1 className="text-xl font-bold leading-tight tracking-tight text-gray-900 md:text-2xl ">
                         Create Ticket
                     </h1>
-                   
+
                     <form className="space-y-4 md:space-y-6" action="#" method="POST">
                         <div>
                             <label
@@ -180,7 +138,7 @@ const Page = () => {
                                 for="name"
                                 className="block mb-2 text-sm font-medium text-gray-900 "
                             >
-                            Name
+                                Name
                             </label>
                             <input
                                 onChange={(e) => onchange(e)}
@@ -214,7 +172,7 @@ const Page = () => {
                                 for="StartTime"
                                 className="block mb-2 text-sm font-medium text-gray-900 "
                             >
-                              Start Time
+                                Start Time
                             </label>
                             <input
                                 onChange={(e) => onchange(e)}
@@ -231,7 +189,7 @@ const Page = () => {
                                 for="EndTime"
                                 className="block mb-2 text-sm font-medium text-gray-900 "
                             >
-                              End Time
+                                End Time
                             </label>
                             <input
                                 onChange={(e) => onchange(e)}
@@ -248,7 +206,7 @@ const Page = () => {
                                 for="StartDate"
                                 className="block mb-2 text-sm font-medium text-gray-900 "
                             >
-                              Start Date
+                                Start Date
                             </label>
                             <input
                                 onChange={(e) => onchange(e)}
@@ -265,7 +223,7 @@ const Page = () => {
                                 for="End Date"
                                 className="block mb-2 text-sm font-medium text-gray-900 "
                             >
-                              End Date
+                                End Date
                             </label>
                             <input
                                 onChange={(e) => onchange(e)}
@@ -282,7 +240,7 @@ const Page = () => {
                                 for="Remaining Ticket"
                                 className="block mb-2 text-sm font-medium text-gray-900 "
                             >
-                              Remaining Ticket
+                                Remaining Ticket
                             </label>
                             <input
                                 onChange={(e) => onchange(e)}
@@ -294,17 +252,17 @@ const Page = () => {
                                 required="true"
                             />
                         </div>
-                        
+
 
                         <button
                             onClick={(e) => handleSubmit(e)}
                             type="submit"
                             className="w-full text-white bg-blue-600 hover:bg-primary-700 focus:ring-4 focus:outline-none focus:ring-primary-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center "
                         >
-                        Submit
+                            Submit
                         </button>
-                        
-            
+
+
                     </form>
                 </div>
             </div>
